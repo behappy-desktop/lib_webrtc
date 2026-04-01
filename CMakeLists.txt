@@ -44,6 +44,10 @@ PRIVATE
     webrtc/platform/linux/webrtc_system_audio_capture_linux.h
     webrtc/platform/mac/webrtc_environment_mac.h
     webrtc/platform/mac/webrtc_environment_mac.mm
+    webrtc/platform/mac/webrtc_loopback_adm_mac.h
+    webrtc/platform/mac/webrtc_loopback_adm_mac.mm
+    webrtc/platform/mac/webrtc_system_audio_capture_mac.h
+    webrtc/platform/mac/webrtc_system_audio_capture_mac.mm
     webrtc/platform/win/webrtc_environment_win.cpp
     webrtc/platform/win/webrtc_environment_win.h
     webrtc/platform/win/webrtc_loopback_adm_win.cpp
@@ -84,3 +88,11 @@ PUBLIC
 PRIVATE
     desktop-app::external_webrtc
 )
+
+if (APPLE)
+    target_link_libraries(lib_webrtc
+    PRIVATE
+        "-weak_framework ScreenCaptureKit"
+        "-framework CoreMedia"
+    )
+endif()

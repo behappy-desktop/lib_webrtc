@@ -8,7 +8,9 @@
 
 #ifdef WEBRTC_LINUX
 #include "webrtc/platform/linux/webrtc_system_audio_capture_linux.h"
-#endif // WEBRTC_LINUX
+#elif defined WEBRTC_MAC // WEBRTC_LINUX
+#include "webrtc/platform/mac/webrtc_system_audio_capture_mac.h"
+#endif // WEBRTC_LINUX || WEBRTC_MAC
 
 #include <utility>
 
@@ -17,9 +19,11 @@ namespace Webrtc {
 bool SystemAudioCaptureSupported() {
 #ifdef WEBRTC_LINUX
 	return details::SystemAudioCaptureLinux::IsSupported();
-#else // WEBRTC_LINUX
+#elif defined WEBRTC_MAC // WEBRTC_LINUX
+	return details::SystemAudioCaptureMac::IsSupported();
+#else // WEBRTC_LINUX || WEBRTC_MAC
 	return false;
-#endif // !WEBRTC_LINUX
+#endif // WEBRTC_LINUX || WEBRTC_MAC
 }
 
 std::unique_ptr<SystemAudioCapture> CreateSystemAudioCapture(
@@ -30,9 +34,15 @@ std::unique_ptr<SystemAudioCapture> CreateSystemAudioCapture(
 	}
 	return std::make_unique<details::SystemAudioCaptureLinux>(
 		std::move(callback));
-#else // WEBRTC_LINUX
+#elif defined WEBRTC_MAC // WEBRTC_LINUX
+	if (!details::SystemAudioCaptureMac::IsSupported()) {
+		return nullptr;
+	}
+	return std::make_unique<details::SystemAudioCaptureMac>(
+		std::move(callback));
+#else // WEBRTC_LINUX || WEBRTC_MAC
 	return nullptr;
-#endif // !WEBRTC_LINUX
+#endif // WEBRTC_LINUX || WEBRTC_MAC
 }
 
 } // namespace Webrtc

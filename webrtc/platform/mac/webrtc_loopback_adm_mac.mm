@@ -70,7 +70,7 @@ API_AVAILABLE(macos(14.0))
 		_active = false;
 		_swrContext = nullptr;
 		_audioQueue = dispatch_queue_create(
-			"org.telegram.desktop.LoopbackAudioCapture",
+			"com.ansible.desktop.LoopbackAudioCapture",
 			DISPATCH_QUEUE_SERIAL);
 	}
 	return self;

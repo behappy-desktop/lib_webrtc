@@ -53,7 +53,7 @@ API_AVAILABLE(macos(14.0))
 		_active = false;
 		_swrContext = nullptr;
 		_audioQueue = dispatch_queue_create(
-			"org.telegram.desktop.SystemAudioCapture",
+			"com.ansible.desktop.SystemAudioCapture",
 			DISPATCH_QUEUE_SERIAL);
 	}
 	return self;
